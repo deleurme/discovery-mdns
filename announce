@@ -17,4 +17,10 @@ var txtRecord = {
 
 var ad = mdns.createAdvertisement( mdns.tcp(service), port, {txtRecord:txtRecord});
 
+ad.stop();
 ad.start();
+
+process.on('SIGINT', function() {
+  ad.stop();
+});
+

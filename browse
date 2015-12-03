@@ -25,14 +25,16 @@ else {
 browser.on('serviceUp', function(service) {
   if (verbose) console.log("up:", service);
   else {
-    console.log("up:", service.fullname, "host:", service.host, "port:", service.port, "txt:", service.txtRecord);
+    if (service.txtRecord&&service.txtRecord.name) {
+      console.log("up:", service.name, "host:", service.host+":"+service.port, service.txtRecord.name);
+    }
+    else {
+      console.log("up:", service.name, "host:", service.host+":"+service.port);
+    }
   }
 });
 browser.on('serviceDown', function(service) {
-  if (verbose) console.log("down:", service);
-  else {
-    console.log("down:", service.fullname, "host:", service.host, "port:", service.port, "txt:", service.txtRecord);
-  }
+  console.log("down:", service);
 });
 
 browser.start();
