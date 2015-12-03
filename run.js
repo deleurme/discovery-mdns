@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 //                     ____  _                 __ 
 //    ____ ___  __  __/ / /_(_)________ ______/ /_
 //   / __ `__ \/ / / / / __/ / ___/ __ `/ ___/ __/
@@ -7,18 +8,19 @@
 // import the module
 var mdns = require('mdns');
 
-// advertise a http server on port 4321
 var txtRecord = {
-    name: 'Helm Discovery Daemon'
-  , service: 'helm-node'
+  name: 'Helm Discovery Daemon', 
+  service: 'helm-node'
 };
-var ad = mdns.createAdvertisement(
-    mdns.tcp('http')
-  , 8080
-  , {txtRecord:txtRecord});
+
+var ad = mdns.createAdvertisement( mdns.tcp('http'), 80, {txtRecord:txtRecord});
+
 ad.start();
 
-ad.stop();
+var api = {
+  stop  : ad.stop (),
+  start : ad.start()
+};
 
 // watch all http servers
 var browser = mdns.createBrowser(mdns.tcp('http'));
@@ -32,12 +34,13 @@ browser.on('serviceDown', function(service) {
 });
 browser.start();
 
-// discover all available service types
+// discover all available service types and log them 
 var browser = mdns.browseThemAll(); 
 browser.on('serviceUp', function(service) {
   console.log("up:", service);
 });
-// browser.on('serviceDown', function(service) {
-  // console.log("down: ", service);
-// });
+browser.on('serviceDown', function(service) {
+  console.log("down: ", service);
+});
+
 browser.start();

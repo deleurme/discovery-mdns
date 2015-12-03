@@ -1,0 +1,45 @@
+#!/usr/bin/env node
+// vim:ft=javascript
+//     __                               
+//    / /_  _________ _      __________ 
+//   / __ \/ ___/ __ \ | /| / / ___/ _ \
+//  / /_/ / /  / /_/ / |/ |/ (__  )  __/
+// /_.___/_/   \____/|__/|__/____/\___/ 
+//                                     
+var mdns = require('mdns');
+var service = process.argv[2] || 'http';
+var browser; 
+console.log("watching for service:", service);
+
+if (service == 'all'){
+  // watch all services
+  console.log("here");
+  browser = mdns.browseThemAll(); 
+} 
+else {
+  // watch a service 
+  browser = mdns.createBrowser(mdns.tcp(service));
+}
+
+// browser.on('serviceUp', function(service) {
+//   // console.log(service);
+//   console.log("up:", service.name, service.host, service.port, 
+//   service.txtRecord ? service.txtRecord : "");
+// });
+//
+// browser.on('serviceDown', function(service) {
+//   console.log("service down: ", service);
+// });     
+browser.on('serviceUp', function(service) {
+  console.log("up:", service);
+});
+browser.on('serviceDown', function(service) {
+  console.log("down: ", service);
+});
+ 
+
+try {
+  browser.start();
+} catch (e) {
+  /* handle error */
+}
