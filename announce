@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+// vim:ft=javascript
+//                                     
+//   ____ _____  ____  ____  __  ______  ________ 
+//  / __ `/ __ \/ __ \/ __ \/ / / / __ \/ ___/ _ \
+// / /_/ / / / / / / / /_/ / /_/ / / / / /__/  __/
+// \__,_/_/ /_/_/ /_/\____/\__,_/_/ /_/\___/\___/ 
+//
+var mdns = require('mdns');
+var service = process.argv[2] || 'http';
+var port = process.argv[3] || 80;
+
+var txtRecord = {
+  name    : 'Helm Discovery Daemon',
+  service : 'helm-node'
+};
+
+var ad = mdns.createAdvertisement( mdns.tcp(service), port, {txtRecord:txtRecord});
+
+ad.start();

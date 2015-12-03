@@ -8,6 +8,7 @@
 //                                     
 var mdns = require('mdns');
 var service = process.argv[2] || 'http';
+var verbose = process.argv[3] ;
 var browser; 
 console.log("watching for service:", service);
 
@@ -21,25 +22,17 @@ else {
   browser = mdns.createBrowser(mdns.tcp(service));
 }
 
-// browser.on('serviceUp', function(service) {
-//   // console.log(service);
-//   console.log("up:", service.name, service.host, service.port, 
-//   service.txtRecord ? service.txtRecord : "");
-// });
-//
-// browser.on('serviceDown', function(service) {
-//   console.log("service down: ", service);
-// });     
 browser.on('serviceUp', function(service) {
-  console.log("up:", service);
+  if (verbose) console.log("up:", service);
+  else {
+    console.log("up:", service.fullname, "host:", service.host, "port:", service.port, "txt:", service.txtRecord);
+  }
 });
 browser.on('serviceDown', function(service) {
-  console.log("down: ", service);
+  if (verbose) console.log("down:", service);
+  else {
+    console.log("down:", service.fullname, "host:", service.host, "port:", service.port, "txt:", service.txtRecord);
+  }
 });
- 
 
-try {
-  browser.start();
-} catch (e) {
-  /* handle error */
-}
+browser.start();
