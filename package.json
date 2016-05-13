@@ -8,11 +8,14 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./announce && sleep 3 && ./browse"
   },
   "keywords": [
     "mdns",
     "multicast",
+    "bonjour",
+    "avahi",
     "discovery"
   ],
   "author": "Shawn Deleurme",

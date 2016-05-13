@@ -6,10 +6,12 @@
 //  / /_/ / /  / /_/ / |/ |/ (__  )  __/
 // /_.___/_/   \____/|__/|__/____/\___/ 
 //                                     
+//
 var mdns = require('mdns');
 var service = process.argv[2] || 'http';
 var verbose = process.argv[3] ;
 var browser; 
+
 console.log("watching for service:", service);
 
 if (service == 'all'){
